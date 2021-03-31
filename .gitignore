@@ -7,3 +7,5 @@
 *.d
 
 __pycache__
+*.whl
+
