@@ -1,0 +1,5 @@
+CONFIG_FILE = 'ad_gmsa.ini'
+LDAPSEARCH_PROG = 'ldapsearch'
+HIGHEST_KVNO_PROG = '../cpp/highest_kvno'
+ADD_KEYTAB_ENTRY_PROG = '../cpp/make_keytab_entry'
+CLEANUP_KEYTAB_PROG = '../cpp/make_keytab_entry'

@@ -1,0 +1,9 @@
+/.vscode
+
+*.keytab
+*.ccache
+
+*.o
+*.d
+
+__pycache__
