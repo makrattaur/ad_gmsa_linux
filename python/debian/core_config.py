@@ -1,0 +1,5 @@
+CONFIG_FILE = '/etc/ad-gmsa/ad-gmsa.ini'
+LDAPSEARCH_PROG = '/usr/bin/ldapsearch'
+HIGHEST_KVNO_PROG = '/usr/bin/ad-gmsa-highest-kvno'
+ADD_KEYTAB_ENTRY_PROG = '/usr/bin/ad-gmsa-make-keytab-entry'
+CLEANUP_KEYTAB_PROG = '/usr/bin/ad-gmsa-cleanup-keytab'

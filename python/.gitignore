@@ -1,1 +1,10 @@
 /ad-gmsa.ini
+/debian/ad-gmsa
+/debian/ad-gmsa.substvars
+/debian/ad-gmsa.*.debhelper
+/debian/ad-gmsa.debhelper.*
+/debian/debhelper-build-stamp
+/debian/.debhelper
+/debian/files
+
+

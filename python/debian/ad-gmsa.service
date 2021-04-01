@@ -1,0 +1,12 @@
+[Unit]
+Description=Microsoft AD gMSA keytab updater
+After=network.target
+
+[Service]
+Type=simple
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/ad-gmsa-update-keytabs
+User=ad-gmsa
+
+[Install]
+WantedBy=multi-user.target

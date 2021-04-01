@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+#export PYBUILD_NAME=ad_gmsa
+export PYBUILD_INSTALL_ARGS=--install-lib=/usr/share/ad-gmsa/ --install-scripts=/usr/share/ad-gmsa/
+export PYBUILD_BEFORE_BUILD=cp debian/core_config.py ad_gmsa/
+
+%:
+	dh $@ --with python3,systemd --buildsystem=pybuild
+
+override_dh_installinit:
+	dh_installinit --noscripts
+

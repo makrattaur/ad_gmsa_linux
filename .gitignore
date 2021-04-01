@@ -8,4 +8,12 @@
 
 __pycache__
 *.whl
+*.egg-info
+.pybuild
+
+*.deb
+/*.build
+/*.buildinfo
+/*.changes
+
 

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+adduser --system --home /var/lib/ad-gmsa --no-create-home --gecos '' --group ad-gmsa
+
+mkdir -p /var/lib/ad-gmsa
+su -s /bin/sh ad-gmsa -c 'test -O /var/lib/ad-gmsa && test -G /var/lib/ad-gmsa' || \
+	chown ad-gmsa:ad-gmsa /var/lib/ad-gmsa
+
+
+#DEBHELPER#
+
+
