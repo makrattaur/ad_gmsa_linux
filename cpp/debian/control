@@ -1,0 +1,14 @@
+Source: ad-gmsa-programs
+Section: extra
+Priority: optional
+Maintainer: Michael Tran <mike_tran@live.com>
+Build-Depends: debhelper (>= 9), pkg-config (>= 0.29-6), libkrb5-dev (>= 1.17-3)
+Standards-Version: 3.9.5
+
+Package: ad-gmsa-programs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Programs for updating keytabs for MS AD gMSA
+ Programs for updating Kerberos keytabs for Microsoft Active Directory group
+ managed service accounts
+

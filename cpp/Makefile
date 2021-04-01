@@ -1,7 +1,7 @@
 
 PKG_CONFIG_LIBS = krb5
 
-CXXFLAGS = -MMD -Wall -std=c++11 $(shell pkg-config --cflags $(PKG_CONFIG_LIBS))
+CXXFLAGS = -g -MMD -Wall -std=c++11 $(shell pkg-config --cflags $(PKG_CONFIG_LIBS))
 LDFLAGS = $(shell pkg-config --libs-only-L --libs-only-other $(PKG_CONFIG_LIBS))
 LDLIBS = -lstdc++ $(shell pkg-config --libs-only-l $(PKG_CONFIG_LIBS))
 
@@ -26,4 +26,11 @@ highest_kvno: highest_kvno.o krb_objects.o
 .PHONY: clean
 clean:
 	rm -f $(PROGS) $(SOURCES:.cpp=.o) $(SOURCES:.cpp=.d)
+
+.PHONY: install
+install:
+	install -d "$(DESTDIR)$(prefix)/bin"
+	install make_keytab_entry "$(DESTDIR)$(prefix)/bin/ad-gmsa-make-keytab-entry"
+	install cleanup_keytab "$(DESTDIR)$(prefix)/bin/ad-gmsa-cleanup-keytab"
+	install highest_kvno "$(DESTDIR)$(prefix)/bin/ad-gmsa-highest-kvno"
 

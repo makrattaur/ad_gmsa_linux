@@ -8,7 +8,7 @@ Standards-Version: 3.9.5
 Package: ad-gmsa
 Architecture: any
 Pre-Depends: dpkg (>= 1.16.1), ${misc:Pre-Depends}
-Depends: ${python3:Depends}, ${misc:Depends}, ldap-utils (>= 2.4.47), adduser
+Depends: ${python3:Depends}, ${misc:Depends}, ldap-utils (>= 2.4.47), adduser, ad-gmsa-programs (>= 0.0.1)
 Description: Update Kerberos keytabs for Microsoft Active Directory services
  Update Kerberos keytabs based on Microsoft Active Directory group managed
  service accounts
