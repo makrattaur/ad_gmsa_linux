@@ -8,7 +8,7 @@ Standards-Version: 3.9.5
 Package: ad-gmsa-programs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Programs for updating keytabs for MS AD gMSA
+Description: Programs for updating keytabs for Microsoft AD gMSA accounts
  Programs for updating Kerberos keytabs for Microsoft Active Directory group
  managed service accounts
 
