@@ -85,16 +85,14 @@ def main():
         
         closest_change_time = min(account.next_change for account in gmsa_accounts_info)
         next_query = None
-        if closest_change_time > timedelta(hours = 7):
-            next_query = timedelta(hours = 7)
-        elif closest_change_time > timedelta(hours = 1):
-            next_query = timedelta(hours = 1)
-        elif closest_change_time > timedelta(minutes = 10):
-            next_query = timedelta(minutes = 10)
-        elif closest_change_time > timedelta(minutes = 5):
-            next_query = timedelta(minutes = 5)
-        else:
+        if closest_change_time < timedelta(minutes = 10):
             next_query = timedelta(minutes = 1)
+        elif closest_change_time < timedelta(minutes = 20):
+            next_query = timedelta(minutes = 10)
+        elif closest_change_time < timedelta(hours = 1):
+            next_query = timedelta(minutes = 20)
+        else:
+            next_query = timedelta(hours = 7)
 
         if one_account_failed and next_query > timedelta(minutes = 5):
             next_query = timedelta(minutes = 5)
