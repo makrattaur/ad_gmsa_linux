@@ -25,8 +25,8 @@ def parse_simple_ldif(string_stream):
 
     for line in string_stream:
 
-        line = line[ : -1 ]
-        if line == '':
+        line = line.strip()
+        if line == '' or line.startswith('#'):
             continue
 
         if line.startswith('dn:'):
