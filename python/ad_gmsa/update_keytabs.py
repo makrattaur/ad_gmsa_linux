@@ -58,6 +58,8 @@ def process_gmsa_account(account_info):
             config.key_versions_to_keep
         )
 
+    return need_insert
+
 def main():
 
     logging.basicConfig(
@@ -66,6 +68,8 @@ def main():
     )
 
     ad_gmsa.config_file.load_config()
+
+    active_password_changes = set()
 
     while True:
         gmsa_accounts_info = ad_gmsa.ldap_query.get_gmsa_accounts_info(config.ldap_uri, config.search_base, config.sam_account_names)
@@ -76,13 +80,23 @@ def main():
             logger.info(f'process account {account_info.sam_account_name}')
             logger.info(f'account {account_info.sam_account_name} will change in {account_info.next_change}')
 
+            if account_info.sam_account_name not in active_password_changes:
+                if account_info.next_change < timedelta(minutes = 5):
+                    logger.info(f'account {account_info.sam_account_name} in password change phase')
+                    active_password_changes.add(account_info.sam_account_name)
+
+            has_updated_keytab = False
             try:
-                process_gmsa_account(account_info)
+                has_updated_keytab = process_gmsa_account(account_info)
                 logger.info(f'processed account {account_info.sam_account_name}')
             except:
                 one_account_failed = True
                 logger.error(f'failed to process account {account_info.sam_account_name}', exc_info = sys.exc_info())
-        
+
+            if account_info.sam_account_name in active_password_changes and has_updated_keytab:
+                logger.info(f'account {account_info.sam_account_name} exited password change phase')
+                active_password_changes.remove(account_info.sam_account_name)
+
         closest_change_time = min(account.next_change for account in gmsa_accounts_info)
         next_query = None
         if closest_change_time < timedelta(minutes = 10):
@@ -94,10 +108,14 @@ def main():
         else:
             next_query = timedelta(hours = 7)
 
+        if len(active_password_changes) > 0:
+            next_query = timedelta(minutes = 1)
+
         if one_account_failed and next_query > timedelta(minutes = 5):
             next_query = timedelta(minutes = 5)
 
         logger.info(f'closest change time: {closest_change_time}')
+        logger.info(f'one accout failed: {one_account_failed}, active password change count: {len(active_password_changes)}')
         logger.info(f'wait for: {next_query}')
 
         time.sleep(next_query.total_seconds())
