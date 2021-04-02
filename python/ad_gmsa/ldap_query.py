@@ -107,7 +107,7 @@ def get_gmsa_accounts_info(ldap_uri, search_base, sam_account_names):
             sam_account_name = attributes['sAMAccountName'][0],
             next_change = next_query,
             next_change_date = next_query_date,
-            service_names = attributes['servicePrincipalName'],
+            service_names = attributes['servicePrincipalName'] if 'servicePrincipalName' in attributes else [],
             kvno = int(attributes['msDS-KeyVersionNumber'][0]),
             # try to return the correct password that is associated with the right kvno.
             password = decoded_blob.current_password if next_query > password_expires else decoded_blob.previous_password,
