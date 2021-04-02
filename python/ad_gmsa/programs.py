@@ -61,7 +61,7 @@ def cleanup_keytab(keytab_file, key_versions_to_keep):
     cleanup_keytab_res = subprocess.run([
             config.cleanup_keytab_prog,
             keytab_file,
-            key_versions_to_keep,
+            str(key_versions_to_keep),
         ],
         capture_output = True
     )
