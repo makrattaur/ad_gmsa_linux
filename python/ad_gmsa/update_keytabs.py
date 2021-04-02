@@ -5,12 +5,15 @@ import os.path
 import subprocess
 import sys
 import time
-import traceback
+import logging
 
 import ad_gmsa.programs
 import ad_gmsa.ldap_query
 import ad_gmsa.config_file
 from ad_gmsa.config_file import config
+
+
+logger = logging.getLogger(__name__)
 
 
 def process_gmsa_account(account_info):
@@ -24,15 +27,15 @@ def process_gmsa_account(account_info):
         keytab_kvno = ad_gmsa.programs.get_highest_kvno(keytab_path)
         if keytab_kvno is not None:
             if account_info.kvno > keytab_kvno:
-                print('ldap kvno changed, need insert')
+                logger.info(f'[{account_info.sam_account_name}] ldap kvno changed, need insert')
                 need_insert = True
             else:
-                print('kvno ok')
+                logger.info(f'[{account_info.sam_account_name}] kvno ok')
         else:
-            print('no highest kvno, need insert')
+            logger.info(f'[{account_info.sam_account_name}] no highest kvno, need insert')
             need_insert = True
     else:
-        print('no keytab, need insert')
+        logger.info(f'[{account_info.sam_account_name}] no keytab, need insert')
         need_insert = True
 
     if need_insert:
@@ -57,6 +60,11 @@ def process_gmsa_account(account_info):
 
 def main():
 
+    logging.basicConfig(
+        level = logging.INFO,
+        format = '%(asctime)s %(levelname)s %(name)s: %(message)s',
+    )
+
     ad_gmsa.config_file.load_config()
 
     while True:
@@ -65,16 +73,15 @@ def main():
         one_account_failed = False
         for account_info in gmsa_accounts_info:
 
-            print(f'process account {account_info.sam_account_name}')
-            print(f'account {account_info.sam_account_name} will change in {account_info.next_change}')
+            logger.info(f'process account {account_info.sam_account_name}')
+            logger.info(f'account {account_info.sam_account_name} will change in {account_info.next_change}')
 
             try:
                 process_gmsa_account(account_info)
-                print(f'processed account {account_info.sam_account_name}')
+                logger.info(f'processed account {account_info.sam_account_name}')
             except:
                 one_account_failed = True
-                print(f'failed to process account {account_info.sam_account_name}: {sys.exc_info()[1]}')
-                traceback.print_tb(sys.exc_info()[2])
+                logger.error(f'failed to process account {account_info.sam_account_name}', exc_info = sys.exc_info())
         
         closest_change_time = min(account.next_change for account in gmsa_accounts_info)
         next_query = None
@@ -92,8 +99,8 @@ def main():
         if one_account_failed and next_query > timedelta(minutes = 5):
             next_query = timedelta(minutes = 5)
 
-        print(closest_change_time)
-        print(next_query)
+        logger.info(f'closest change time: {closest_change_time}')
+        logger.info(f'wait for: {next_query}')
 
         time.sleep(next_query.total_seconds())
 
