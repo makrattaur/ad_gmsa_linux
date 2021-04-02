@@ -84,6 +84,9 @@ def get_gmsa_accounts_info(ldap_uri, search_base, sam_account_names):
     gmsa_accounts_info = []
     for dn, attributes in query_result_ldif:
 
+        if 'msDS-ManagedPassword' not in attributes:
+            continue
+
         decoded_blob = ad_gmsa.password_blob.decode_msds_managed_pw_blob(attributes['msDS-ManagedPassword'][0])
 
         now = datetime.now()
