@@ -5,6 +5,7 @@ import os.path
 import subprocess
 import sys
 import time
+import traceback
 
 import ad_gmsa.programs
 import ad_gmsa.ldap_query
@@ -72,7 +73,8 @@ def main():
                 print(f'processed account {account_info.sam_account_name}')
             except:
                 one_account_failed = True
-                print(f'failed to process account {account_info.sam_account_name}: {sys.exc_info()}')
+                print(f'failed to process account {account_info.sam_account_name}: {sys.exc_info()[1]}')
+                traceback.print_tb(sys.exc_info()[2])
         
         closest_change_time = min(account.next_change for account in gmsa_accounts_info)
         next_query = None
