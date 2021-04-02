@@ -74,6 +74,10 @@ def main():
     while True:
         gmsa_accounts_info = ad_gmsa.ldap_query.get_gmsa_accounts_info(config.ldap_uri, config.search_base, config.sam_account_names)
 
+        if len(gmsa_accounts_info) < 1:
+            logger.warn(f'no accounts to monitor')
+            break
+
         one_account_failed = False
         for account_info in gmsa_accounts_info:
 
