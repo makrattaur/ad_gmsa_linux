@@ -103,14 +103,16 @@ def main():
 
         closest_change_time = min(account.next_change for account in gmsa_accounts_info)
         next_query = None
-        if closest_change_time < timedelta(minutes = 10):
-            next_query = timedelta(minutes = 1)
-        elif closest_change_time < timedelta(minutes = 20):
-            next_query = timedelta(minutes = 10)
-        elif closest_change_time < timedelta(hours = 1):
-            next_query = timedelta(minutes = 20)
-        else:
+        if closest_change_time > timedelta(hours = 8):
             next_query = timedelta(hours = 7)
+        elif closest_change_time > timedelta(hours = 2):
+            next_query = timedelta(hours = 1)
+        elif closest_change_time > timedelta(hours = 1):
+            next_query = timedelta(minutes = 10)
+        elif closest_change_time > timedelta(minutes = 15):
+            next_query = timedelta(minutes = 7)
+        else:
+            next_query = timedelta(minutes = 1)
 
         if len(active_password_changes) > 0:
             next_query = timedelta(minutes = 1)
