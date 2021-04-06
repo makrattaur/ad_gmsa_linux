@@ -22,7 +22,7 @@ def process_gmsa_account(account_info):
 
     need_insert = False
 
-    if os.path.isfile(keytab_file_name):
+    if os.path.isfile(keytab_path):
 
         keytab_kvno = ad_gmsa.programs.get_highest_kvno(keytab_path)
         if keytab_kvno is not None:
