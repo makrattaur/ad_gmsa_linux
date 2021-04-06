@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from datetime import timedelta
+from datetime import (datetime, timedelta)
 import os.path
 import subprocess
 import sys
@@ -82,7 +82,7 @@ def main():
         for account_info in gmsa_accounts_info:
 
             logger.info(f'process account {account_info.sam_account_name}')
-            logger.info(f'account {account_info.sam_account_name} will change in {account_info.next_change}')
+            logger.info(f'account {account_info.sam_account_name} will change in {account_info.next_change} (on {datetime.now() + account_info.next_change})')
 
             if account_info.sam_account_name not in active_password_changes:
                 if account_info.next_change < timedelta(minutes = 5):
@@ -120,9 +120,9 @@ def main():
         if one_account_failed and next_query > timedelta(minutes = 5):
             next_query = timedelta(minutes = 5)
 
-        logger.info(f'closest change time: {closest_change_time}')
-        logger.info(f'one accout failed: {one_account_failed}, active password change count: {len(active_password_changes)}')
-        logger.info(f'wait for: {next_query}')
+        logger.info(f'closest change time: {closest_change_time} (on {datetime.now() + closest_change_time})')
+        logger.info(f'one account failed: {one_account_failed}, active password change count: {len(active_password_changes)}')
+        logger.info(f'wait for: {next_query} (on {datetime.now() + next_query})')
 
         time.sleep(next_query.total_seconds())
 
