@@ -95,7 +95,7 @@ def main():
                 logger.info(f'processed account {account_info.sam_account_name}')
             except:
                 one_account_failed = True
-                logger.error(f'failed to process account {account_info.sam_account_name}', exc_info = sys.exc_info())
+                logger.exception(f'failed to process account {account_info.sam_account_name}')
 
             if account_info.sam_account_name in active_password_changes and has_updated_keytab:
                 logger.info(f'account {account_info.sam_account_name} exited password change phase')
